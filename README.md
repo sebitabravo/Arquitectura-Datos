@@ -6,7 +6,7 @@ Este proyecto implementa un proceso ETL (Extract, Transform, Load) para analizar
 
 ## 🗂️ Estructura del Repositorio
 
-```
+```text
 Arquitectura-Datos/
 │
 ├── DEFUNCIONES_FUENTE_DEIS_1990_2022_CIFRAS_OFICIALES.csv  # Datos fuente (832 MB)
@@ -19,6 +19,7 @@ Arquitectura-Datos/
 ## 📊 Descripción de los Datos
 
 ### Archivo Fuente
+
 - **Nombre**: `DEFUNCIONES_FUENTE_DEIS_1990_2022_CIFRAS_OFICIALES.csv`
 - **Tamaño**: 832 MB
 - **Período**: 1990-2022
@@ -47,10 +48,12 @@ El dataset contiene las siguientes columnas principales:
 ## 🔄 Proceso ETL
 
 ### 1. **Extracción (Extract)**
+
 - Lee el archivo CSV fuente en chunks de 50,000 registros para optimizar memoria
 - Maneja encoding Latin-1 para caracteres especiales en español
 
 ### 2. **Transformación (Transform)**
+
 - **Filtrado por COVID-19**: Busca registros con palabras clave:
   - 'covid'
   - 'coronavirus'
@@ -61,18 +64,21 @@ El dataset contiene las siguientes columnas principales:
 - **Combinación**: Une campos de diagnóstico para búsqueda comprehensiva
 
 ### 3. **Carga (Load)**
+
 - Genera archivo filtrado: `defunciones_covid_filtradas.csv`
 - Total de registros COVID: 55,060 defunciones
 
 ## 📈 Estadísticas Clave
 
 ### Distribución Temporal
+
 - **2019**: 1 caso (coronavirus no especificado)
 - **2020**: 18,680 defunciones
 - **2021**: 22,946 defunciones (año peak)
 - **2022**: 13,433 defunciones
 
 ### Características Demográficas
+
 - Análisis disponible por:
   - Sexo
   - Edad
@@ -85,6 +91,7 @@ El dataset contiene las siguientes columnas principales:
 ### Modelo Dimensional Propuesto
 
 #### Tabla de Hechos: `fact_defunciones_covid`
+
 - fecha_id (FK)
 - ubicacion_id (FK)
 - persona_id (FK)
@@ -93,9 +100,10 @@ El dataset contiene las siguientes columnas principales:
 - edad_fallecimiento
 - lugar_defuncion
 
-#### Dimensiones:
+#### Dimensiones
 
-**1. dim_tiempo**
+#### 1. dim_tiempo
+
 - fecha_id (PK)
 - fecha_completa
 - año
@@ -105,20 +113,23 @@ El dataset contiene las siguientes columnas principales:
 - dia_semana
 - es_fin_semana
 
-**2. dim_ubicacion**
+#### 2. dim_ubicacion
+
 - ubicacion_id (PK)
 - codigo_comuna
 - nombre_comuna
 - nombre_region
 - zona_geografica
 
-**3. dim_persona**
+#### 3. dim_persona
+
 - persona_id (PK)
 - sexo
 - rango_edad
 - grupo_etario
 
-**4. dim_diagnostico**
+#### 4. dim_diagnostico
+
 - diagnostico_id (PK)
 - codigo_diag
 - tipo_covid (confirmado/sospechoso)
@@ -129,16 +140,19 @@ El dataset contiene las siguientes columnas principales:
 ## 🚀 Uso del Script
 
 ### Requisitos
+
 ```bash
 pip install pandas
 ```
 
 ### Ejecución
+
 ```bash
 python main.py
 ```
 
 ### Salida del Script
+
 1. Lista de columnas disponibles
 2. Total de registros COVID encontrados
 3. Top 10 combinaciones más frecuentes (sexo, edad, región)
